@@ -5,7 +5,7 @@ class GameManager {
         this.currentIndex = 0;
         this.isRunning = false;
         this.intervalId = null;
-        this.switchSpeed = 100; // 切换速度（毫秒）
+        this.switchSpeed = 50; // 切换速度（毫秒）
         
         this.init();
     }
@@ -35,6 +35,14 @@ class GameManager {
             '陈敏.jpg', '陈欣烨.jpg', '陈茜茜.jpg', '鞠岳坤.jpg', '高小迪.jpg', '高校长.jpg',
             '魏威.jpg', '黄学务长.jpg'
         ];
+
+
+        // const imageFiles = [
+        //     '王标.jpg','于洋.jpg', '刘博文.jpg', '刘天博.jpg'
+        // ];
+
+
+        console.log(imageFiles.length, '45454545454');
 
         // 定义黑名单（无法被抽到的图片）
         const blacklist = ['刘天博'];
