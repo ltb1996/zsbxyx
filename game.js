@@ -6,7 +6,7 @@ class GameManager {
         this.displayIndex = 0; // 用于顺序显示的索引
         this.isRunning = false;
         this.intervalId = null;
-        this.switchSpeed = 1000; // 切换速度（毫秒）
+        this.switchSpeed = 50; // 切换速度（毫秒）
         
         this.init();
     }
@@ -111,10 +111,27 @@ class GameManager {
         document.getElementById('start-btn').disabled = false;
         document.getElementById('stop-btn').disabled = true;
         
-        // 显示当前图片名字到控制台
-        const currentImage = this.images[this.currentIndex];
-        console.log('游戏停止！');
-        console.log('当前图片名字：', currentImage.name);
+        // 检查当前显示的图片是否是黑名单
+        const displayImage = this.allImages[this.displayIndex - 1] || this.allImages[this.allImages.length - 1];
+        
+        if (displayImage && displayImage.excluded) {
+            // console.log('检测到黑名单图片：', displayImage.name, '，0.5秒后自动切换');
+            
+            // 0.5秒后切换到非黑名单图片
+            setTimeout(() => {
+                this.skipToNextValidImage();
+            }, 100);
+            
+            // 显示最终选择的非黑名单图片
+            setTimeout(() => {
+                const finalImage = this.images[this.currentIndex];
+                console.log('最终选择：', finalImage.name);
+            }, 600);
+        } else {
+            // 正常显示当前选择的图片
+            const currentImage = this.images[this.currentIndex];
+            console.log('游戏停止！当前图片：', currentImage.name);
+        }
         
         // 移除切换效果
         this.removeSwitchEffect();
@@ -128,6 +145,30 @@ class GameManager {
     // 切换图片
     switchImage() {
         this.updateDisplay();
+    }
+    
+    // 跳过黑名单图片，找到下一个有效图片
+    skipToNextValidImage() {
+        let attempts = 0;
+        const maxAttempts = this.allImages.length;
+        
+        while (attempts < maxAttempts) {
+            // 继续按顺序前进
+            this.displayIndex++;
+            if (this.displayIndex >= this.allImages.length) {
+                this.displayIndex = 0;
+            }
+            
+            const displayImage = this.allImages[this.displayIndex];
+            
+            // 如果是非黑名单图片，更新显示并设置currentIndex
+            if (!displayImage.excluded) {
+                this.updateDisplay();
+                break;
+            }
+            
+            attempts++;
+        }
     }
     
     // 更新显示
@@ -144,7 +185,7 @@ class GameManager {
             gameImage.src = displayImage.src;
             gameImage.alt = '猜猜我是谁';
             
-            // 只在非黑名单图片时更新currentIndex
+            // 更新当前显示的图片
             if (!displayImage.excluded) {
                 this.currentIndex = this.images.findIndex(img => img.id === displayImage.id);
             }
@@ -176,7 +217,7 @@ style.textContent = `
     }
     
     .game-image.animated {
-        animation: pulse 1.0s infinite;
+        animation: pulse 0.1s infinite;
     }
 `;
 document.head.appendChild(style);
