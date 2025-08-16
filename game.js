@@ -234,7 +234,7 @@ class MusicController {
     init() {
         this.setupEventListeners();
         // 初始音量设为30%
-        this.audio.volume = 0.3;
+        this.audio.volume = 0.8;
         this.updateButtonState();
     }
     

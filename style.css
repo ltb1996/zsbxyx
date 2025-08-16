@@ -108,7 +108,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 40px;
+    gap: 50px;
     max-width: 1000px;
     margin: 0 auto;
 }
@@ -166,7 +166,7 @@ body {
     align-items: center;
     min-width: 200px;
     align-self: flex-start;
-    margin-top: 200px;
+    margin-top: 165px;
 }
 
 .controls {
@@ -231,6 +231,70 @@ body {
 .info span {
     font-weight: bold;
     color: #667eea;
+}
+
+.game-rules {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border: 1px solid #dee2e6;
+    border-radius: 15px;
+    padding: 25px;
+    margin-top: 30px;
+    max-width: 280px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.game-rules h3 {
+    color: #495057;
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.game-rules p {
+    color: #6c757d;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+.game-rules p:last-child {
+    margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+    .game-rules {
+        max-width: 100%;
+        padding: 20px;
+        margin-top: 20px;
+    }
+    
+    .game-rules h3 {
+        font-size: 1.2rem;
+    }
+    
+    .game-rules p {
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+}
+
+@media (max-width: 480px) {
+    .game-rules {
+        padding: 15px;
+        margin-top: 15px;
+    }
+    
+    .game-rules h3 {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+    }
+    
+    .game-rules p {
+        font-size: 0.85rem;
+        line-height: 1.4;
+    }
 }
 
 @media (max-width: 768px) {
