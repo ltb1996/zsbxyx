@@ -90,7 +90,10 @@ class GameManager {
         document.getElementById('start-btn').disabled = false;
         document.getElementById('stop-btn').disabled = true;
         
+        // 显示当前图片名字到控制台
+        const currentImage = this.images[this.currentIndex];
         console.log('游戏停止！');
+        console.log('当前图片名字：', currentImage.name);
         
         // 移除切换效果
         this.removeSwitchEffect();
