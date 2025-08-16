@@ -32,6 +32,56 @@ body {
     background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
     color: white;
     gap: 30px;
+    position: relative;
+}
+
+/* 音乐控制样式 */
+.music-control {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.music-btn {
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.music-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, #764ba2, #667eea);
+}
+
+.music-btn.playing {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    animation: pulse-music 1.5s infinite;
+}
+
+@keyframes pulse-music {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.music-icon {
+    transition: transform 0.3s ease;
+}
+
+.music-btn:hover .music-icon {
+    transform: scale(1.2);
 }
 
 .logo {
@@ -288,5 +338,17 @@ body {
         width: 200px;
         padding: 15px 40px;
         font-size: 1.1rem;
+    }
+}
+@media (max-width: 480px) {
+    .music-control {
+        top: 15px;
+        right: 15px;
+    }
+    
+    .music-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
     }
 }

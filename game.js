@@ -6,7 +6,7 @@ class GameManager {
         this.displayIndex = 0; // 用于顺序显示的索引
         this.isRunning = false;
         this.intervalId = null;
-        this.switchSpeed = 500; // 切换速度（毫秒）
+        this.switchSpeed = 1000; // 切换速度（毫秒）
         
         this.init();
     }
@@ -166,14 +166,70 @@ style.textContent = `
     }
     
     .game-image.animated {
-        animation: pulse 0.1s infinite;
+        animation: pulse 1.0s infinite;
     }
 `;
 document.head.appendChild(style);
 
-// 页面加载完成后初始化游戏
+// 音乐控制功能
+class MusicController {
+    constructor() {
+        this.audio = document.getElementById('bgm');
+        this.toggleBtn = document.getElementById('music-toggle');
+        this.isPlaying = false;
+        this.init();
+    }
+    
+    init() {
+        this.setupEventListeners();
+        // 页面加载时自动播放（需要用户交互触发）
+        this.audio.volume = 0.3; // 设置音量
+    }
+    
+    setupEventListeners() {
+        this.toggleBtn.addEventListener('click', () => this.toggle());
+        
+        // 键盘快捷键：M键切换音乐
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'KeyM') {
+                e.preventDefault();
+                this.toggle();
+            }
+        });
+    }
+    
+    toggle() {
+        if (this.isPlaying) {
+            this.pause();
+        } else {
+            this.play();
+        }
+    }
+    
+    play() {
+        this.audio.play().then(() => {
+            this.isPlaying = true;
+            this.toggleBtn.classList.add('playing');
+            this.toggleBtn.innerHTML = '🎵';
+            console.log('BGM已播放');
+        }).catch(error => {
+            console.log('自动播放被阻止，需要用户交互:', error);
+        });
+    }
+    
+    pause() {
+        this.audio.pause();
+        this.isPlaying = false;
+        this.toggleBtn.classList.remove('playing');
+        this.toggleBtn.innerHTML = '🔇';
+        console.log('BGM已暂停');
+    }
+}
+
+// 页面加载完成后初始化游戏和音乐
 document.addEventListener('DOMContentLoaded', () => {
     window.gameManager = new GameManager();
+    window.musicController = new MusicController();
 });
 
 // 键盘快捷键
