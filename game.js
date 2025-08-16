@@ -115,14 +115,14 @@ class GameManager {
     
     // 添加切换效果
     addSwitchEffect() {
-        const imageContainer = document.querySelector('.image-container');
-        imageContainer.style.animation = 'pulse 0.1s infinite';
+        const gameImage = document.getElementById('game-image');
+        gameImage.classList.add('animated');
     }
     
     // 移除切换效果
     removeSwitchEffect() {
-        const imageContainer = document.querySelector('.image-container');
-        imageContainer.style.animation = 'none';
+        const gameImage = document.getElementById('game-image');
+        gameImage.classList.remove('animated');
     }
 }
 
@@ -130,13 +130,13 @@ class GameManager {
 const style = document.createElement('style');
 style.textContent = `
     @keyframes pulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.02); }
-        100% { transform: scale(1); }
+        0% { opacity: 1; }
+        50% { opacity: 0.8; }
+        100% { opacity: 1; }
     }
     
-    .game-image.fade {
-        opacity: 0.5;
+    .game-image.animated {
+        animation: pulse 0.1s infinite;
     }
 `;
 document.head.appendChild(style);
