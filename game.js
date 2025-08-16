@@ -26,11 +26,11 @@ class GameManager {
     loadImages() {
         // 获取所有图片文件名（已按A-Z排序）
         const imageFiles = [
-            '王标.jpg','于洋.jpg', '刘博文.jpg', '刘新宇.jpg', '刘腾飞.jpg', '刘芬.jpg',
+            '王标.jpg','于洋.jpg', '刘天博.jpg','刘博文.jpg', '刘新宇.jpg', '刘腾飞.jpg', '刘芬.jpg',
             '孟想.jpg', '孟晓.jpg', '宁顺.jpg', '宋丹.jpg', '宋毓洋.jpg', '尹茂林.jpg',
             '张芮南.jpg', '徐婧.jpg', '曹小杰.jpg', '曾迟.jpg', '朱思博.jpg', '李世鹏.jpg',
             '李修伟.jpg', '李果.jpg', '李雅楠.jpg', '柴德华.jpg', '标哥.jpg', '汪蒙.jpg',
-            '滕艳秋.jpg', '滕颖慧.jpg', '熊炜.jpg', '王喜鸿.jpg', '王宇.jpg', '刘天博.jpg',
+            '滕艳秋.jpg', '滕颖慧.jpg', '熊炜.jpg', '王喜鸿.jpg', '王宇.jpg', 
             '王睿.jpg', '王霞.jpg', '程都.jpg', '稽达.jpg', '肖慧.jpg', '肖芳芳.jpg',
             '董佩佩.jpg', '蔡严杰.jpg', '许文东.jpg', '许文怡.jpg', '谢畅.jpg', '陈嘉莉.jpg',
             '陈敏.jpg', '陈欣烨.jpg', '陈茜茜.jpg', '鞠岳坤.jpg', '高小迪.jpg', '高校长.jpg',
@@ -93,6 +93,11 @@ class GameManager {
         
         // 添加切换效果
         this.addSwitchEffect();
+        
+        // 播放BGM
+        if (window.musicController) {
+            window.musicController.play();
+        }
     }
     
     // 停止游戏
@@ -113,6 +118,11 @@ class GameManager {
         
         // 移除切换效果
         this.removeSwitchEffect();
+        
+        // 暂停BGM
+        if (window.musicController) {
+            window.musicController.pause();
+        }
     }
     
     // 切换图片
@@ -182,8 +192,9 @@ class MusicController {
     
     init() {
         this.setupEventListeners();
-        // 页面加载时自动播放（需要用户交互触发）
-        this.audio.volume = 0.3; // 设置音量
+        // 初始音量设为30%
+        this.audio.volume = 0.3;
+        this.updateButtonState();
     }
     
     setupEventListeners() {
@@ -209,20 +220,28 @@ class MusicController {
     play() {
         this.audio.play().then(() => {
             this.isPlaying = true;
-            this.toggleBtn.classList.add('playing');
-            this.toggleBtn.innerHTML = '🎵';
+            this.updateButtonState();
             console.log('BGM已播放');
         }).catch(error => {
-            console.log('自动播放被阻止，需要用户交互:', error);
+            console.log('播放失败:', error);
         });
     }
     
     pause() {
         this.audio.pause();
         this.isPlaying = false;
-        this.toggleBtn.classList.remove('playing');
-        this.toggleBtn.innerHTML = '🔇';
+        this.updateButtonState();
         console.log('BGM已暂停');
+    }
+    
+    updateButtonState() {
+        if (this.isPlaying) {
+            this.toggleBtn.classList.add('playing');
+            this.toggleBtn.innerHTML = '🎵';
+        } else {
+            this.toggleBtn.classList.remove('playing');
+            this.toggleBtn.innerHTML = '🔇';
+        }
     }
 }
 
