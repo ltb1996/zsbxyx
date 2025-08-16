@@ -3,9 +3,10 @@ class GameManager {
     constructor() {
         this.images = [];
         this.currentIndex = 0;
+        this.displayIndex = 0; // 用于顺序显示的索引
         this.isRunning = false;
         this.intervalId = null;
-        this.switchSpeed = 50; // 切换速度（毫秒）
+        this.switchSpeed = 500; // 切换速度（毫秒）
         
         this.init();
     }
@@ -25,11 +26,11 @@ class GameManager {
     loadImages() {
         // 获取所有图片文件名（已按A-Z排序）
         const imageFiles = [
-            '王标.jpg','于洋.jpg', '刘博文.jpg', '刘天博.jpg', '刘新宇.jpg', '刘腾飞.jpg', '刘芬.jpg',
+            '王标.jpg','于洋.jpg', '刘博文.jpg', '刘新宇.jpg', '刘腾飞.jpg', '刘芬.jpg',
             '孟想.jpg', '孟晓.jpg', '宁顺.jpg', '宋丹.jpg', '宋毓洋.jpg', '尹茂林.jpg',
             '张芮南.jpg', '徐婧.jpg', '曹小杰.jpg', '曾迟.jpg', '朱思博.jpg', '李世鹏.jpg',
             '李修伟.jpg', '李果.jpg', '李雅楠.jpg', '柴德华.jpg', '标哥.jpg', '汪蒙.jpg',
-            '滕艳秋.jpg', '滕颖慧.jpg', '熊炜.jpg', '王喜鸿.jpg', '王宇.jpg', 
+            '滕艳秋.jpg', '滕颖慧.jpg', '熊炜.jpg', '王喜鸿.jpg', '王宇.jpg', '刘天博.jpg',
             '王睿.jpg', '王霞.jpg', '程都.jpg', '稽达.jpg', '肖慧.jpg', '肖芳芳.jpg',
             '董佩佩.jpg', '蔡严杰.jpg', '许文东.jpg', '许文怡.jpg', '谢畅.jpg', '陈嘉莉.jpg',
             '陈敏.jpg', '陈欣烨.jpg', '陈茜茜.jpg', '鞠岳坤.jpg', '高小迪.jpg', '高校长.jpg',
@@ -121,19 +122,24 @@ class GameManager {
     
     // 更新显示
     updateDisplay() {
-        // 从完整数组中随机选择，确保所有图片都能显示
-        const displayIndex = Math.floor(Math.random() * this.allImages.length);
-        const displayImage = this.allImages[displayIndex];
         const gameImage = document.getElementById('game-image');
+        
+        if (this.displayIndex >= this.allImages.length) {
+            this.displayIndex = 0; // 循环到开头
+        }
+        
+        const displayImage = this.allImages[this.displayIndex];
         
         if (displayImage && gameImage) {
             gameImage.src = displayImage.src;
             gameImage.alt = '猜猜我是谁';
             
-            // 记录当前显示的图片索引（在可选数组中的索引）
+            // 只在非黑名单图片时更新currentIndex
             if (!displayImage.excluded) {
                 this.currentIndex = this.images.findIndex(img => img.id === displayImage.id);
             }
+            
+            this.displayIndex++;
         }
     }
     
