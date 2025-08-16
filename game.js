@@ -35,6 +35,8 @@ class GameManager {
             '陈敏.jpg', '陈欣烨.jpg', '陈茜茜.jpg', '鞠岳坤.jpg', '高小迪.jpg', '高校长.jpg',
             '魏威.jpg', '黄学务长.jpg'
         ];
+
+        console.log(imageFiles.length, '+++++++++++++++');
         
         // 创建图片数组对象
         this.images = imageFiles.map((filename, index) => {
