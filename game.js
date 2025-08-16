@@ -5,7 +5,7 @@ class GameManager {
         this.currentIndex = 0;
         this.isRunning = false;
         this.intervalId = null;
-        this.switchSpeed = 50; // 切换速度（毫秒）
+        this.switchSpeed = 100; // 切换速度（毫秒）
         
         this.init();
     }
@@ -36,19 +36,26 @@ class GameManager {
             '魏威.jpg', '黄学务长.jpg'
         ];
 
-        console.log(imageFiles.length, '+++++++++++++++');
+        // 定义黑名单（无法被抽到的图片）
+        const blacklist = ['刘天博'];
         
-        // 创建图片数组对象
-        this.images = imageFiles.map((filename, index) => {
+        // 创建完整图片数组（用于显示）
+        this.allImages = imageFiles.map((filename, index) => {
             const name = filename.replace('.jpg', '');
             return {
                 id: index,
                 name: name,
-                src: `imgs/${filename}`
+                src: `imgs/${filename}`,
+                excluded: blacklist.includes(name) // 标记是否被排除
             };
         });
         
-        console.log('游戏初始化完成，共加载', this.images.length, '张图片');
+        // 创建可选图片数组（排除黑名单）
+        this.images = this.allImages.filter(img => !img.excluded);
+        
+        console.log('游戏初始化完成，总图片：', this.allImages.length, '张');
+        // console.log('可抽中图片：', this.images.length, '张（已排除黑名单）');
+        // console.log('黑名单图片：', this.allImages.filter(img => img.excluded).map(img => img.name));
     }
     
     // 设置事件监听器
@@ -101,18 +108,24 @@ class GameManager {
     
     // 切换图片
     switchImage() {
-        this.currentIndex = Math.floor(Math.random() * this.images.length);
         this.updateDisplay();
     }
     
     // 更新显示
     updateDisplay() {
-        const currentImage = this.images[this.currentIndex];
+        // 从完整数组中随机选择，确保所有图片都能显示
+        const displayIndex = Math.floor(Math.random() * this.allImages.length);
+        const displayImage = this.allImages[displayIndex];
         const gameImage = document.getElementById('game-image');
         
-        if (currentImage && gameImage) {
-            gameImage.src = currentImage.src;
+        if (displayImage && gameImage) {
+            gameImage.src = displayImage.src;
             gameImage.alt = '猜猜我是谁';
+            
+            // 记录当前显示的图片索引（在可选数组中的索引）
+            if (!displayImage.excluded) {
+                this.currentIndex = this.images.findIndex(img => img.id === displayImage.id);
+            }
         }
     }
     
